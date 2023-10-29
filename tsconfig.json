@@ -6,7 +6,8 @@
     "allowJs": true,
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types"]
   },
   "include": [
     "src/**/*"

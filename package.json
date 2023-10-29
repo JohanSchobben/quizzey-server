@@ -8,20 +8,27 @@
     "watch": "npm run copy && tsc -w",
     "serve": "cd dist && nodemon main.js",
     "dev": "npm-run-all --parallel watch serve",
-    "copy": "copyfiles .env dist/"
+    "copy": "copyfiles .env dist/ && copyfiles jwt.key.pub dist/ && copyfiles jwt.key dist/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.1",
+    "@types/express": "^4.17.20",
+    "@types/jsonwebtoken": "^9.0.4",
+    "@types/knex": "^0.16.1",
     "copyfiles": "^2.4.1",
     "nodemon": "^3.0.1",
-    "npm-run-all": "^4.1.5",
-    "@types/express": "^4.17.20"
+    "npm-run-all": "^4.1.5"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mariadb": "^3.2.2"
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.0.1",
+    "mariadb": "^3.2.2",
+    "mysql": "^2.18.1"
   }
 }

@@ -1,0 +1,19 @@
+### Login
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+  "username": "johan",
+  "password": "secret01!"
+}
+
+
+### Register a user
+POST {{host}}/api/register
+Content-Type: application/json
+
+{
+  "username": "johan",
+  "password": "secret01!",
+  "email": "johan@johan.nl"
+}

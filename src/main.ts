@@ -1,22 +1,14 @@
 import express from "express";
-import { config } from "dotenv";
-import {connectToDatabase} from "./data/db";
-import * as path from "path";
+import router from "./router/routes";
+import {getEnvironmentValue} from "./utils/env";
 const app = express();
-config({path: path.join(__dirname, ".env")});
 
-const port = process.env["PORT"];
+const port = Number(getEnvironmentValue("PORT"))
+console.log(port)
+app.use(express.json());
 
-
-app.get('/', (_, res) => {
-    res.json({
-        property: "Hello World!"
-    });
-});
-
-connectToDatabase().then(() => {
-    app.listen(port, () => {
-        console.log(`server listening on port ${port}`);
-    });
+app.use('/api', router)
+app.listen(port, () => {
+console.log(`server listening on port ${port}`);
 });
 
