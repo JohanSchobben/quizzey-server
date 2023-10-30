@@ -3,6 +3,7 @@ import {database} from "../data/db";
 import {User} from "../models/user";
 import {compare, hash} from "../utils/hash";
 import {createToken} from "../utils/jwt";
+import {createUser} from "../data/user";
 
 export async function register(req: Request, res: Response): Promise<void> {
     const {
@@ -12,12 +13,10 @@ export async function register(req: Request, res: Response): Promise<void> {
     } = req.body;
 
     const hashedPassword = await hash(password);
-    await database.transaction(function (trx) {
-        return trx.insert({
-            username,
-            email,
-            password: hashedPassword
-        }).into("users");
+    await createUser({
+        username,
+        email,
+        password: hashedPassword
     });
 
     res.status(201).json({
