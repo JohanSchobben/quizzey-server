@@ -16,3 +16,11 @@ export function createUser(user: User): Promise<void> {
         });
     });
 }
+
+export function selectUserByUsername(userdId: number): Promise<User> {
+    return database<User>("users").where("id", userdId).first()
+}
+
+export function selectAllUsers(): Promise<User[]> {
+    return database<User>("users");
+}

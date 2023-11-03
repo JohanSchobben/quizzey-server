@@ -3,7 +3,7 @@ import {database} from "../data/db";
 import {User} from "../models/user";
 import {compare, hash} from "../utils/hash";
 import {createToken} from "../utils/jwt";
-import {createUser} from "../data/user";
+import {createUser, selectAllUsers} from "../data/user";
 
 export async function register(req: Request, res: Response): Promise<void> {
     const {
@@ -45,5 +45,13 @@ export async function login(req: Request, res: Response): Promise<void> {
 
     res.status(401).json({
         message: "username or password incorrect"
-    })
+    });
 }
+
+export async function getAllUsers(req: Request, res: Response): Promise<void> {
+    const users = await selectAllUsers();
+    res.status(200).json({
+        users
+    });
+}
+
