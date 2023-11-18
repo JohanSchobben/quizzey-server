@@ -13,6 +13,14 @@ export function createUser(user: User): Promise<void> {
         await trx.insert({
             "role_id": userRoleId,
             "user_id": userId
-        });
+        }).into("users_roles");
     });
+}
+
+export function selectUserByUsername(userdId: number): Promise<User> {
+    return database<User>("users").where("id", userdId).first()
+}
+
+export function selectAllUsers(): Promise<User[]> {
+    return database<User>("users");
 }

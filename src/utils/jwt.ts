@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import {promises} from "fs";
 import path from "path";
+import {getEnvironmentValue} from "./env";
 
 
 /*
@@ -13,10 +14,10 @@ import path from "path";
 
 const secret = promises.readFile(path.join(__dirname, "..", "jwt.key"), "utf8");
 
-export function createToken(userId: string): Promise<{ token: string; expires: Date }> {
+export function createToken(userId: string, username: string): Promise<{ token: string; expires: Date }> {
     return secret.then(secret => {
         return new Promise((res, rej) => {
-            jwt.sign({userId}, secret, {algorithm: "RS256", expiresIn: "2h"}, function (err, token) {
+            jwt.sign({userId, username}, secret, {algorithm: "RS256", expiresIn: "2h"}, function (err, token) {
                 const date = new Date();
                 date.setHours(date.getHours()+2);
                 if (err) {
@@ -34,14 +35,19 @@ export function createToken(userId: string): Promise<{ token: string; expires: D
 }
 
 
-export function verifyToken(token): Promise<string> {
-    return new Promise((res, rej) => {
-        jwt.verify(token, process.env["JWT_SECRET"], function (error, decoded) {
-            if (error) {
-                rej(error);
-                return;
-            }
-            res(decoded.userId)
+export function verifyToken(token): Promise<{ userId: string, username: string }> {
+    return secret.then(secretString => {
+        return new Promise((res, rej) => {
+            jwt.verify(token, secretString, function (error, decoded) {
+                console.log("hier", decoded);
+                if (error) {
+                    rej(error);
+                    return;
+                }
+                res({userId: decoded.userId, username: decoded.username})
+            })
         })
     })
+
+
 }
