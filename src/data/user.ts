@@ -13,7 +13,7 @@ export function createUser(user: User): Promise<void> {
         await trx.insert({
             "role_id": userRoleId,
             "user_id": userId
-        });
+        }).into("users_roles");
     });
 }
 

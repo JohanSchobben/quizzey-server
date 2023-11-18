@@ -2,15 +2,28 @@ import {NextFunction, Request, Response} from "express";
 import {verifyToken} from "../utils/jwt";
 
 export async function authenticated(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers["Authentication"].slice(7, req.headers['Authentication'].length);
+    const token = req.headers["authorization"]?.slice(7, req.headers['authorization']?.length);
     console.log(token);
-    const verified = await verifyToken(token).catch(() => res.status(401).json({message: "Something went wrong verifying token"}));
-    if (verified) {
-        res.locals.userId = verified;
-        next();
+    if (!token) {
+        res.status(401).json({
+            message: "You are not logged in"
+        })
         return;
     }
-    res.status(401).json({
-        message: "You are not logged in"
-    });
+
+    try {
+        const verified = await verifyToken(token);
+        if (verified) {
+            res.locals.userId = verified;
+            next();
+            return;
+        }
+        res.status(401).json({
+            message: "You are not logged in"
+        });
+    } catch {
+        res.status(401).json({message: "Something went wrong verifying token"});
+    }
+
+
 }

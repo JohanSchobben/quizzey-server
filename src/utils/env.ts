@@ -8,7 +8,7 @@ type EnvironmentVariable = "DATABASE_NAME"
     | "DATABASE_HOST"
     | "DATABASE_PORT"
     | "PORT"
-    | "JWT_SECRET"
+    | "SUPER_ADMIN_EMAIL"
 
 export function getEnvironmentValue(property: EnvironmentVariable): string {
     return process.env[property];

@@ -35,7 +35,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 
     const passwordsEqual = await compare(req.body.password, user.password);
     if (passwordsEqual) {
-        const token = await createToken(user.id);
+        const token = await createToken(user.id, user.username);
         res.status(200).json({
             token,
             message: "User is logged in",
@@ -49,6 +49,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 }
 
 export async function getAllUsers(req: Request, res: Response): Promise<void> {
+    console.log('hi34');
     const users = await selectAllUsers();
     res.status(200).json({
         users
